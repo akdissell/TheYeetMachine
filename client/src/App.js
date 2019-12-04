@@ -186,7 +186,6 @@ console.log("signature is:", signatureToBeAdded);
           </button>
         </div>
         <div>
-
         </div>
       </div>
     );
