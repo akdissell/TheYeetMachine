@@ -6,17 +6,18 @@ import Entries from './components/entries';
 import Input from './components/input';
 
 class App extends Component {
-  //initialize our state
-  state = {
-    data: [],
-    id: 0,
-    message: null,
-    signature: null,
-    intervalIsSet: false,
-    idToDelete: null,
-    idToUpdate: null,
-    objectToUpdate: null,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+      message: null,
+      signature: null,
+      intervalIsSet: false,
+      idToDelete: null,
+      idToUpdate: null,
+      objectToUpdate: null,
+    };
+  }
 
   componentDidMount() {
     this.getDataFromDb();
@@ -57,13 +58,13 @@ class App extends Component {
     this.setState({ data: data });
   }
   generateMessageId = (messages) => {
-    let currentIds = messages.map((data) => data.id);
+    let currentIds = messages.map((message) => message.id);
     let idToBeAdded = 0;
     while (currentIds.includes(idToBeAdded)) {
       ++idToBeAdded;
     }
+    return idToBeAdded;
   }
-
   getObjIdFromMessageId = (messageId, messages) => {
     let objId = null;
     messageId = parseInt(messageId, 10);
@@ -76,22 +77,8 @@ class App extends Component {
   }
 
   render() {
-    const { data } = this.state;
     return (
       <div>
-        <div>
-          <ul>
-            {this.state.length <= 0
-              ? 'NO DB ENTRIES YET'
-              : data.map((datum, datumIndex) => (
-                <li style={{ padding: '10px' }} key={datumIndex}>
-                  <span style={{ color: 'gray' }}> id: </span> {datum.id} <br />
-                  <span style={{ color: 'gray' }}> data: </span>
-                  {datum.message}
-                </li>
-              ))}
-          </ul>
-        </div>
         <div style={{ padding: '10px' }}>
           <input
             id='add'
@@ -165,7 +152,9 @@ class App extends Component {
             <Switch>
               <Route exact path='/' component={Home} />
               <Route path='/input' component={Input} />
-              <Route path='/entries' component={Entries} />
+              <Route path='/entries'
+                render={() => <Entries messages={this.state.data} />}
+              />
             </Switch>
           </div>
         </Router>
