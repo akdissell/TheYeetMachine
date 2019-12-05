@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import * as MessageHandler from "./handlers/messageHandler";
 import Home from './components/home';
-import About from './components/about';
-import Contact from './components/contact';
+import Entries from './components/entries';
+import Input from './components/input';
 
 class App extends Component {
   //initialize our state
@@ -35,101 +35,63 @@ class App extends Component {
     }
   }
 
-  getDataFromDb = () => {
-
-    console.log('Im getting the data!')
-    fetch('http://localhost:3001/api/getData')
-      .then((data) => data.json())
-      .then((res) => this.setState({ data: res.data }));
-  };
-
-  putDataToDB = async (messageToBeAdded, signatureToBeAdded) => {
-    console.log('Datum going out!')
-
-    let currentIds = this.state.data.map((data) => data.id);
+  putToDBThenGetData = async (messageToBeAdded, signatureToBeAdded) => {
+    const idToBeAdded = this.generateMessageId(this.state.data);
+    await MessageHandler.postMessage(messageToBeAdded, signatureToBeAdded, idToBeAdded);
+    this.getDataFromDb();
+    document.getElementById('add').value = '';
+  }
+  deleteFromDBThenGetData = async (idToDelete) => {
+    const objIdToDelete = this.getObjIdFromMessageId(idToDelete, this.state.data);
+    await MessageHandler.deleteMessage(objIdToDelete);
+    this.getDataFromDb();
+  }
+  updateDBThenGetData = async (idToUpdate, updateToApply) => {
+    console.log('Im updating the data!')
+    const objIdToUpdate = this.getObjIdFromMessageId(idToUpdate, this.state.data);
+    await MessageHandler.updateMessage(objIdToUpdate, updateToApply);
+    this.getDataFromDb();
+  }
+  getDataFromDb = async () => {
+    const data = await MessageHandler.getMessages();
+    this.setState({ data: data });
+  }
+  generateMessageId = (messages) => {
+    let currentIds = messages.map((data) => data.id);
     let idToBeAdded = 0;
     while (currentIds.includes(idToBeAdded)) {
       ++idToBeAdded;
     }
-console.log("signature is:", signatureToBeAdded);
-    await axios.post('http://localhost:3001/api/putData', {
-      id: idToBeAdded,
-      message: messageToBeAdded,
-      signature: signatureToBeAdded,
-      
-    });
-    console.log("signature after axios is:", signatureToBeAdded);
-  };
+  }
 
-  deleteFromDB = async (idToDelete) => {
-    idToDelete = parseInt(idToDelete, 10);
-    let objIdToDelete = null;
-    this.state.data.forEach((datum) => {
-      if (datum.id === idToDelete) {
-        objIdToDelete = datum._id;
+  getObjIdFromMessageId = (messageId, messages) => {
+    let objId = null;
+    messageId = parseInt(messageId, 10);
+    messages.forEach((datum) => {
+      if (datum.id === messageId) {
+        objId = datum._id;
       }
     });
-
-    await axios.delete('http://localhost:3001/api/deleteData', {
-      data: {
-        id: objIdToDelete,
-      },
-    });
-  };
-
-  updateDB = async (idToUpdate, updateToApply) => {
-    console.log('Im updating the data!')
-    let objIdToUpdate = null;
-    idToUpdate = parseInt(idToUpdate, 10);
-    this.state.data.forEach((datum) => {
-      if (datum.id === idToUpdate) {
-        objIdToUpdate = datum._id;
-      }
-    });
-
-    await axios.post('http://localhost:3001/api/updateData', {
-      id: objIdToUpdate,
-      update: { message: updateToApply },
-    });
-  };
-  // adds data then grabs from database
-  putToDBThenGetData = async (messageToBeAdded, signatureToBeAdded) => {
-    await this.putDataToDB(messageToBeAdded, signatureToBeAdded);
-    console.log("signature on putThenGet is:", signatureToBeAdded);
-    this.getDataFromDb();
-    document.getElementById('add').value = '';
-  }
-  // deletes data then grabs from database
-  deleteFromDBThenGetData = async (idToDelete) => {
-    await this.deleteFromDB(idToDelete);
-    this.getDataFromDb();
-  }
-  // updates data then grabs from database
-  updateDBThenGetData = async (idToUpdate, updateToApply) => {
-    await this.updateDB(idToUpdate, updateToApply);
-    this.getDataFromDb();
-  }
-  // removes collection from database then grabs from database
-  dropDataCollectionInDB = async () => {
-    await axios.delete('http://localhost:3001/api/removeDataCollection');
-    this.getDataFromDb();
+    return objId;
   }
 
   render() {
     const { data } = this.state;
     return (
       <div>
-        <ul>
-          {data.length <= 0
-            ? 'NO DB ENTRIES YET'
-            : data.map((datum, datumIndex) => (
-              <li style={{ padding: '10px' }} key={datumIndex}>
-                <span style={{ color: 'gray' }}> id: </span> {datum.id} <br />
-                <span style={{ color: 'gray' }}> data: </span>
-                {datum.message}
-              </li>
-            ))}
-        </ul>
+        <div>
+          <ul>
+            {this.state.length <= 0
+              ? 'NO DB ENTRIES YET'
+              : data.map((datum, datumIndex) => (
+                <li style={{ padding: '10px' }} key={datumIndex}>
+                  <span style={{ color: 'gray' }}> id: </span> {datum.id} <br />
+                  <span style={{ color: 'gray' }}> data: </span>
+                  {datum.message}
+                </li>
+              ))}
+          </ul>
+        </div>
         <div style={{ padding: '10px' }}>
           <input
             id='add'
@@ -174,13 +136,13 @@ console.log("signature is:", signatureToBeAdded);
             UPDATE
           </button>
         </div>
-        <div style={{ padding: '10px'}}>
-            <input
+        <div style={{ padding: '10px' }}>
+          <input
             type="text"
             style={{ width: '200px' }}
             onChange={(e) => this.setState({ signature: e.target.value })}
             placeholder="Sign Here"
-            />
+          />
         </div>
         <div style={{ padding: '10px' }}>
           <button
@@ -189,26 +151,24 @@ console.log("signature is:", signatureToBeAdded);
             REMOVE COLLECTION
           </button>
         </div>
-        <div>
-        </div>
         <Router>
-        <div>
-          <h2>Welcome to React Router Tutorial</h2>
-          <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <ul className="navbar-nav mr-auto">
-            <li><Link to={'/'} className="nav-link"> Home </Link></li>
-            <li><Link to={'/contact'} className="nav-link">Contact</Link></li>
-            <li><Link to={'/about'} className="nav-link">About</Link></li>
-          </ul>
-          </nav>
-          <hr />
-          <Switch>
+          <div>
+            <h2>Welcome to React Router Tutorial</h2>
+            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+              <ul className="navbar-nav mr-auto">
+                <li><Link to={'/'} className="nav-link"> Home </Link></li>
+                <li><Link to={'/entries'} className="nav-link">Entries</Link></li>
+                <li><Link to={'/input'} className="nav-link">Input</Link></li>
+              </ul>
+            </nav>
+            <hr />
+            <Switch>
               <Route exact path='/' component={Home} />
-              <Route path='/contact' component={Contact} />
-              <Route path='/about' component={About} />
-          </Switch>
-        </div>
-      </Router>
+              <Route path='/input' component={Input} />
+              <Route path='/entries' component={Entries} />
+            </Switch>
+          </div>
+        </Router>
       </div>
     );
   }

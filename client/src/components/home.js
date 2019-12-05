@@ -5,6 +5,14 @@ class Home extends Component {
     return (
         <div>
           <h2>Home</h2>
+          <div style={{ padding: '10px' }}>
+              This is where we enter THE YEET MACHINE
+          </div>
+          <div style={{ padding: '10px' }}>
+              <button>
+                  YEET
+              </button>
+          </div>
         </div>
     );
   }
