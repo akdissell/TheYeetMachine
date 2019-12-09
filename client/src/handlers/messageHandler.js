@@ -34,7 +34,6 @@ const updateMessage = async (objIdToUpdate, updateToApply) => {
 
 const deleteAllMessages = async () => {
     await axios.delete('http://localhost:3001/api/removeDataCollection');
-    this.getDataFromDb();
 }
 
 
