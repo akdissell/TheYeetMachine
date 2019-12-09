@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const getMessages = async () => {
-    console.log('Im getting the data!')
     let response = await fetch('http://localhost:3001/api/getData')
         .then((data) => {
             return data.json();

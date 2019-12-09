@@ -72,7 +72,6 @@ router.delete('/removeDataCollection', (req, res) => {
 // this method adds new data in our database
 router.post('/putData', (req, res) => {
   let data = new Data();
-
   const { id, message, signature } = req.body;
 
   if ((!id && id !== 0) || !message || !signature) {
