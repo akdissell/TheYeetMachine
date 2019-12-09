@@ -1,11 +1,17 @@
 
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 export default class Entries extends Component {
   render() {
     return (
-      <div>
+      <>
         <h2>List entries here</h2>
+        <Link to={'/input'} className="nav-link">
+          <button>
+            YEET
+          </button>
+        </Link>
         <ul>
           {(this.props.messages.length <= 0)
             ? "NO DB ENTRIES YET"
@@ -17,7 +23,7 @@ export default class Entries extends Component {
               </li>
             ))}
         </ul>
-      </div>
+      </>
     );
   }
 }
