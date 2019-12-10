@@ -15,7 +15,7 @@ export default class DeleteMessage extends Component {
         this.props.recontextualize();
     }
 
-    render() {
+    deleteInputComponent = () => {
         return (
             <div style={{ margin: '10px' }}>
                 <input
@@ -24,10 +24,33 @@ export default class DeleteMessage extends Component {
                     onChange={(e) => this.setState({ idToDelete: e.target.value })}
                     placeholder="put id of item to delete here"
                 />
-                <button onClick={() => { this.deleteMessage(this.state.idToDelete) }}>
+                <button 
+                    className="Button"
+                    onClick={() => { this.deleteMessage(this.state.idToDelete) }}>
                     DELETE
                 </button>
             </div>
         )
+    }
+
+    dropCollectionComponent = () => {
+        return (
+            <button
+                className="Button"
+                style={{ margin: '0px 10px' }}
+                onClick={MessageHandler.deleteAllMessages}
+            >
+                REMOVE COLLECTION
+            </button>
+        )
+    }
+
+    render() {
+        return (
+            <>
+                {this.deleteInputComponent()}
+                {this.dropCollectionComponent()}
+            </>
+        );
     }
 }

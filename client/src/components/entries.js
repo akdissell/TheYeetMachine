@@ -8,7 +8,7 @@ export default class Entries extends Component {
       <>
         <h2>List entries here</h2>
         <Link to={'/input'} className="nav-link">
-          <button>
+          <button className="Button">
             YEET
           </button>
         </Link>

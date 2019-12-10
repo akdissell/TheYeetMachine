@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import * as MessageHandler from '../../handlers/messageHandler';
 import AddMessage from './addMessage';
 import DeleteMessage from './deleteMessage';
 import UpdateMessage from './updateMessage';
@@ -34,33 +33,30 @@ export default class Input extends Component {
     return objId;
   }
 
-  extraButtons = () => {
+  navButton = () => {
     return (
-      <React.Fragment>
-        <div style={{ margin: '10px' }}>
-          <button
-            onClick={MessageHandler.deleteAllMessages}>
-            REMOVE COLLECTION
+      <div style={{ margin: '10px' }}>
+        <Link to={'/entries'} className="nav-link">
+          <button className="Button">
+            YOINK THE YEETS
           </button>
-        </div>
-        <div style={{ margin: '10px' }}>
-          <Link to={'/entries'} className="nav-link">
-            <button>
-              YOINK THE YEETS
-            </button>
-          </Link>
-        </div>
-      </React.Fragment>
+        </Link>
+      </div>
     )
   }
 
-
   render() {
     return (
+      <div className="FullPage">
       <React.Fragment>
         <h2>Make inputs here</h2>
         <AddMessage
           messages={this.props.messages}
+          recontextualize={this.recontextualize}
+        />
+        <UpdateMessage
+          messages={this.props.messages}
+          getObjIdFromMessageId={this.getObjIdFromMessageId}
           recontextualize={this.recontextualize}
         />
         <DeleteMessage
@@ -69,13 +65,9 @@ export default class Input extends Component {
           getObjIdFromMessageId={this.getObjIdFromMessageId}
           recontextualize={this.recontextualize}
         />
-        <UpdateMessage
-          messages={this.props.messages}
-          getObjIdFromMessageId={this.getObjIdFromMessageId}
-          recontextualize={this.recontextualize}
-        />
-        {this.extraButtons()}
+        {this.navButton()}
       </React.Fragment>
+      </div>
     );
   }
 }

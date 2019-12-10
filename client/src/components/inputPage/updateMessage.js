@@ -1,5 +1,6 @@
 import React from 'react';
 import * as MessageHandler from '../../handlers/messageHandler';
+import './inputpage.css'
 
 
 export default class UpdateMessage extends React.Component {
@@ -32,11 +33,11 @@ export default class UpdateMessage extends React.Component {
                     onChange={(e) => this.setState({ updateToApply: e.target.value })}
                     placeholder="put new value of the item here"
                 />
-                <button
+                <button className="Button"
                     onClick={() => this.updateMessage(this.state.idToUpdate, this.state.updateToApply)}
                 >
                     UPDATE
-                 </button>
+                </button>
             </div>
         )
     }

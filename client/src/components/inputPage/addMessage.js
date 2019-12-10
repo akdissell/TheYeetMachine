@@ -41,7 +41,9 @@ export default class AddMessage extends Component {
                     onChange={(e) => this.setState({ signature: e.target.value })}
                     placeholder="Sign Here"
                 />
-                <button onClick={() => this.putToDBThenGetData(this.state.message, this.state.signature)}>
+                <button 
+                    className="Button"
+                    onClick={() => this.putToDBThenGetData(this.state.message, this.state.signature)}>
                     ADD
                 </button>
             </div>
