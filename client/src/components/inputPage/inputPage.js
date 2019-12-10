@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as MessageHandler from '../../handlers/messageHandler';
 import AddMessage from './addMessage';
+import DeleteMessage from './deleteMessage';
 import { Link } from 'react-router-dom';
 
 export default class Input extends Component {
@@ -13,11 +14,7 @@ export default class Input extends Component {
     };
   }
 
-  deleteMessage = async (idToDelete) => {
-    const objIdToDelete = this.getObjIdFromMessageId(idToDelete, this.props.messages);
-    await MessageHandler.deleteMessage(objIdToDelete);
-    this.recontextualize()
-  }
+
 
   updateMessage = async (idToUpdate, updateToApply) => {
     const objIdToUpdate = this.getObjIdFromMessageId(idToUpdate, this.props.messages);
@@ -49,21 +46,7 @@ export default class Input extends Component {
     document.getElementById('updateMessageInput').value = ''
   }
 
-  deleteMessageComponent = () => {
-    return (
-      <div style={{ margin: '10px' }}>
-        <input
-          id="deleteByIDInput"
-          style={{ width: '200px' }}
-          onChange={(e) => this.setState({ idToDelete: e.target.value })}
-          placeholder="put id of item to delete here"
-        />
-        <button onClick={() => { this.deleteMessage(this.state.idToDelete) }}>
-          DELETE
-      </button>
-      </div>
-    )
-  }
+
 
   updateMessageComponent = () => {
     return (
@@ -117,7 +100,10 @@ export default class Input extends Component {
       <React.Fragment>
         <h2>Make inputs here</h2>
         <AddMessage messages={this.props.messages} recontextualize={this.recontextualize} />
-        {this.deleteMessageComponent()}
+        <DeleteMessage idToDelete={this.idToDelete } 
+          recontextualize={this.recontextualize} 
+          getObjIdFromMessageId={this.getObjIdFromMessageId}  
+          messages={this.props.messages}/>
         {this.updateMessageComponent()}
         {this.extraButtons()}
       </React.Fragment>
