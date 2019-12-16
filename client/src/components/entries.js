@@ -12,7 +12,7 @@ export default class Entries extends Component {
             YEET
           </button>
         </Link>
-        <ul>
+        <ul className="EntriesList">
           {(this.props.messages.length <= 0)
             ? "NO DB ENTRIES YET"
             : this.props.messages.map((message, messageIndex) => (

@@ -1,0 +1,39 @@
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #4C3D30;
+  }
+  
+  li {
+    float: left;
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  /* Change the link color to #111 (black) on hover */
+  li a:hover {
+    background-color: #8E7854;
+  }
+
+  h2 {
+      color: #27464F;
+      text-align: center;
+  }
+
+  .EntriesList {
+      background-color: transparent;
+  }
+
+  body {
+    margin: 0;
+    background-color: #AAD8E0;
+    /* text-align: center; */
+}

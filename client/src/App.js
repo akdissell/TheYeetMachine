@@ -4,6 +4,7 @@ import * as MessageHandler from './handlers/messageHandler';
 import Home from './components/home';
 import Entries from './components/entries';
 import Input from './components/inputPage/inputPage';
+import './App.css';
 
 class App extends Component {
   constructor(props) {

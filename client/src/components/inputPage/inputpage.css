@@ -1,11 +1,8 @@
 .Button {
-    background-color: #99E1D9;
-    color: #27474E;
+    background-color: #446272;
+    color: white;
     border-color: #32292F;
 }
 
-.FullPage {
-    background-color: #D84797;
-    height: 100vh;
-    width: 100vw;
-}
+
+
