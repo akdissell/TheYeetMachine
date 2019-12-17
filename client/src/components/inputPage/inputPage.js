@@ -3,6 +3,7 @@ import AddMessage from './addMessage';
 import DeleteMessage from './deleteMessage';
 import UpdateMessage from './updateMessage';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 export default class Input extends Component {
   constructor(props) {
@@ -35,21 +36,20 @@ export default class Input extends Component {
 
   navButton = () => {
     return (
-      <div style={{ margin: '10px' }}>
+      <YoinkContainer>
         <Link to={'/entries'} className="nav-link">
-          <button className="Button">
+          <YoinkButton>
             YOINK THE YEETS
-          </button>
+          </YoinkButton>
         </Link>
-      </div>
+      </YoinkContainer>
     )
   }
 
   render() {
     return (
-      <div className="FullPage">
-      <React.Fragment>
-        <h2>Make inputs here</h2>
+      <>
+        <InputHeader>Make inputs here</InputHeader>
         <AddMessage
           messages={this.props.messages}
           recontextualize={this.recontextualize}
@@ -66,9 +66,22 @@ export default class Input extends Component {
           recontextualize={this.recontextualize}
         />
         {this.navButton()}
-      </React.Fragment>
-      </div>
+      </>
     );
   }
 }
+
+const InputHeader = styled.div`
+  color: #27464F;
+  text-align: center;
+  font-size: 2em;
+`
+const YoinkContainer = styled.div`
+  margin: 10px;
+`
+const YoinkButton = styled.button`
+  background-color: #446272;
+  color: white;
+  border-color: #32292F;
+`
 

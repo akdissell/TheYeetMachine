@@ -5,8 +5,9 @@ import Home from './components/home';
 import Entries from './components/entries';
 import Input from './components/inputPage/inputPage';
 import './App.css';
+import styled from 'styled-components';
 
-class App extends Component {
+export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -42,11 +43,11 @@ class App extends Component {
       <React.Fragment>
         <h2>Welcome to The Yeet Machine</h2>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <ul className="navbar-nav mr-auto">
+          <NavBar>
             <li><Link to={'/'} className="nav-link"> Home </Link></li>
             <li><Link to={'/entries'} className="nav-link">Entries</Link></li>
             <li><Link to={'/input'} className="nav-link">Input</Link></li>
-          </ul>
+          </NavBar>
         </nav>
         <hr />
       </React.Fragment>
@@ -76,4 +77,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const NavBar = styled.ul`
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #4C3D30;
+`

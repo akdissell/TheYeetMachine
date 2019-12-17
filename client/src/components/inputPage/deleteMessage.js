@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as MessageHandler from '../../handlers/messageHandler';
+import styled from 'styled-components';
 
 export default class DeleteMessage extends Component {
     constructor(props) {
@@ -17,31 +18,25 @@ export default class DeleteMessage extends Component {
 
     deleteInputComponent = () => {
         return (
-            <div style={{ margin: '10px' }}>
-                <input
+            <DeleteComponent>
+                <DeleteInput
                     id="deleteByIDInput"
-                    style={{ width: '200px' }}
                     onChange={(e) => this.setState({ idToDelete: e.target.value })}
                     placeholder="put id of item to delete here"
                 />
-                <button 
-                    className="Button"
+                <DeleteButton
                     onClick={() => { this.deleteMessage(this.state.idToDelete) }}>
                     DELETE
-                </button>
-            </div>
+                </DeleteButton>
+            </DeleteComponent>
         )
     }
 
     dropCollectionComponent = () => {
         return (
-            <button
-                className="Button"
-                style={{ margin: '0px 10px' }}
-                onClick={MessageHandler.deleteAllMessages}
-            >
+            <RemoveCollectionButton onClick={MessageHandler.deleteAllMessages}>
                 REMOVE COLLECTION
-            </button>
+            </RemoveCollectionButton>
         )
     }
 
@@ -54,3 +49,24 @@ export default class DeleteMessage extends Component {
         );
     }
 }
+
+const DeleteComponent = styled.div`
+    margin: 10px;
+`
+
+const DeleteInput = styled.input`
+    width: 200px;
+`
+
+const DeleteButton = styled.button`
+    background-color: #446272;
+    color: white;
+    border-color: #32292F;
+`
+
+const RemoveCollectionButton = styled.button`
+    margin: 0px 10px;    
+    background-color: #446272;
+    color: white;
+    border-color: #32292F;
+`

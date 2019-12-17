@@ -1,12 +1,12 @@
-ul {
+/* ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
     background-color: #4C3D30;
-  }
+  } */
   
-  li {
+  .nav-link {
     float: left;
   }
   
